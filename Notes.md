@@ -116,3 +116,6 @@ for (char ch = 'A'; ch <= 'Z'; ch++) {
     cout << ch;
 }
 
+
+
+Section 2.6: String Variables and Literals
