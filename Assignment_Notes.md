@@ -10,3 +10,9 @@ endl = "end line"
 \n = newline character
 
 On 1.3 Console Input
+
+
+Good practice for fixing errors reported by the compiler.
+1. Focus on FIRST error message, ignoring the rest.
+2. Look at reported line of first error message. If error found, fix. Else, look at previous few lines.
+3. Compile, repeat.
