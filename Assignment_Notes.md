@@ -16,3 +16,7 @@ Good practice for fixing errors reported by the compiler.
 1. Focus on FIRST error message, ignoring the rest.
 2. Look at reported line of first error message. If error found, fix. Else, look at previous few lines.
 3. Compile, repeat.
+
+
+Floating-point division by zero
+Dividing a nonzero floating-point number by zero is undefined in regular arithmetic. Many programming languages produce an error when performing floating-point division by 0, but C++ does not. C++ handles this operation by producing infinity or -infinity, depending on the signs of the operands. Printing a floating-point variable that holds infinity or -infinity outputs inf or -inf.

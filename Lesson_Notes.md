@@ -119,3 +119,7 @@ for (char ch = 'A'; ch <= 'Z'; ch++) {
 
 
 Section 2.6: String Variables and Literals
+
+
+Floating-point division by zero
+Dividing a nonzero floating-point number by zero is undefined in regular arithmetic. Many programming languages produce an error when performing floating-point division by 0, but C++ does not. C++ handles this operation by producing infinity or -infinity, depending on the signs of the operands. Printing a floating-point variable that holds infinity or -infinity outputs inf or -inf.
