@@ -121,5 +121,56 @@ for (char ch = 'A'; ch <= 'Z'; ch++) {
 Section 2.6: String Variables and Literals
 
 
-Floating-point division by zero
-Dividing a nonzero floating-point number by zero is undefined in regular arithmetic. Many programming languages produce an error when performing floating-point division by 0, but C++ does not. C++ handles this operation by producing infinity or -infinity, depending on the signs of the operands. Printing a floating-point variable that holds infinity or -infinity outputs inf or -inf.
+2.9 Constant variables
+Instructor note:
+This is an important section, but in my opinion it is better to place the constants before int main() instead of inside int main() (for reasons that we will see in a few weeks). Please review Lesson 2.9 of the lessons (coincidentally the same number as this section).
+
+Figure 2.9.1: Constant variable example: Lightning distance.
+
+int main() {
+   const double SPEED_OF_SOUND   = 761.207; // Miles/hour (sea level)
+   const double SECONDS_PER_HOUR = 3600.0;  // Secs/hour
+   double secondsBetween;
+   double timeInHours;
+   double distInMiles;
+   
+   cout << "Enter seconds between lightning and thunder: ";
+   cin  >> secondsBetween;
+   
+   timeInHours = secondsBetween / SECONDS_PER_HOUR;
+   distInMiles = SPEED_OF_SOUND * timeInHours;
+   
+   cout << "Lightning strike was approximately" << endl;
+   cout << distInMiles << " miles away." << endl;
+   
+   return 0;
+}
+
+
+
+2.10 Using math functions
+Basics
+Some programs require math operations beyond +, -, *, /, like computing a square root. A standard math library has about 20 math operations, known as functions. A programmer can include the library and then use those math functions.
+
+A function is a list of statements executed by invoking the function's name, such invoking is known as a function call. Any function input values, or arguments, appear within ( ), separated by commas if more than one. Below, function sqrt is called with one argument, areaSquare. The function call evaluates to a value, as in sqrt(areaSquare) below evaluating to 7.0, which is assigned to sideSquare.
+
+
+Table 2.10.1: A few common math functions from the math library.
+Function	   Behavior	                    Example
+sqrt(x)	    Square root of x	     sqrt(9.0) evaluates to 3.0.
+pow(x, y)	Power: x to the Y        pow(6.0, 2.0) evaluates to 36.0.
+fabs(x)   	Absolute value of x	     fabs(-99.5) evaluates to 99.5.
+
+
+
+2.12 Type conversions
+Type conversions
+A calculation sometimes must mix integer and floating-point numbers. For example, given that about 50.4% of human births are males, then 0.504 * numBirths calculates the number of expected males in numBirths births. If numBirths is an int variable (int because the number of births is countable), then the expression combines a floating-point and integer.
+
+A type conversion is a conversion of one data type to another, such as an int to a double. The compiler automatically performs several common conversions between int and double types, such automatic conversions are known as implicit conversion.
+
+For an arithmetic operator like + or *, if either operand is a double, the other is automatically converted to double, and then a floating-point operation is performed.
+For assignments, the right side type is converted to the left side type.
+int-to-double conversion is straightforward: 25 becomes 25.0.
+
+double-to-int conversion just drops the fraction: 4.9 becomes 4.
