@@ -174,3 +174,13 @@ For assignments, the right side type is converted to the left side type.
 int-to-double conversion is straightforward: 25 becomes 25.0.
 
 double-to-int conversion just drops the fraction: 4.9 becomes 4.
+
+
+Table 2.14.2: Common escape sequences.
+Escape sequence	   Char
+\n	              newline
+\t	              tab
+\'	              single quote
+\"	              double quote
+\\	              backslash
+
