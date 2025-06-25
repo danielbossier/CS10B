@@ -133,3 +133,118 @@ int main() {
 
    return 0;
 }
+
+
+
+
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+
+using namespace std;
+
+int main() {
+
+	int total;
+	int card1;
+	int card2;
+	int card3;
+	char userResponse;
+
+	/* for (int i = 0; i < 1; i++) {
+		cout << "First cards: " << rand() % 10 + 1 << ", " << rand() % 10 + 1 << endl;
+	}
+	*/
+	card1 = rand() % 10 + 1;
+	card2 = rand() % 10 + 1;
+
+	cout << "First cards: " << card1 << ", " << card2 << endl;
+	total = (card1 + card2);
+	cout << "Total: " << total << endl;
+
+	cout << "Do you want another card (y/n)?" << endl;
+	cin >> userResponse;
+	cout << "Total: " << total << endl;
+	cout << "You entered: " << userResponse << endl;
+		
+	while (userResponse == 'y') {
+		cout << "Do you want another card (y/n)?" << endl;
+		cin >> userResponse;
+		cout << "You entered: " << userResponse << endl;
+		cout << "Total: " << total << endl;
+	}
+
+	
+	/*if (response2 == 'y') {
+		cout << "Do you want another card (y/n)?" << endl;
+		cin >> response3;
+	}
+	*/
+
+
+	return 0;
+}
+
+
+
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+
+using namespace std;
+
+int main() {
+
+	int card1;
+	int card2;
+	int total;
+	int hitCard;
+	char userResponse;
+	char playAgain;
+
+	playAgain = 'y';   //setting loop trigger (y = initiate loop)
+
+	while (playAgain == 'y') {     //create first two cards and set total
+		card1 = rand() % 10 + 1;
+		card2 = rand() % 10 + 1;
+		total = (card1 + card2);
+
+		cout << "First cards: " << card1 << ", " << card2 << endl;
+		cout << "Total: " << total << endl;
+
+		if (total == 21) {                       //checking for blackjack
+			cout << "Congratulations!" << endl;
+		}
+		else {
+			cout << "Do you want another card (y/n)? ";  //offer user chance to hit
+			cin >> userResponse;
+
+			while (userResponse == 'y') {              //user "hits", new card is generated and total updated
+				hitCard = rand() % 10 + 1;
+				cout << "Card: " << hitCard << endl;
+				total = total + hitCard;
+				cout << "Total: " << total << endl;
+
+				if (total >= 21) {                    //after new total, check if blackjack or bust
+					break;
+				}
+
+				cout << "Do you want another card (y/n)? "; //offer another chance to hit
+				cin >> userResponse;
+			}
+			
+			if (total == 21) {                        //blackjack and bust logic
+				cout << "Congratulations!" << endl;
+			}
+			else if (total > 21) {
+				cout << "Bust." << endl;
+			
+			}
+		}
+
+		cout << "Would you like to play again (y/n)? "; //chance to play again and reset loop
+		cin >> playAgain;
+	}
+
+	return 0;
+}
