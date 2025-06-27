@@ -184,3 +184,8 @@ Escape sequence	   Char
 \"	              double quote
 \\	              backslash
 
+
+Some variables only need to store a small set of named values. For example, a variable representing a traffic light need only store values named GREEN, YELLOW, or RED. An enumeration type (enum) declares a name for a new type and possible values for that type.
+
+
+enum identifier {enumerator1, enumerator2,  ...};

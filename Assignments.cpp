@@ -248,3 +248,131 @@ int main() {
 
 	return 0;
 }
+
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+   string userText;
+   int usaIndex;
+
+   cout << "Enter text: ";
+   getline(cin, userText);
+
+   // At least one occurrence exists
+   while (userText.find("U.S.A.") != string::npos) {
+      // Get index of first instance
+      usaIndex = userText.find("U.S.A.");
+
+      // U.S.A. is 6 long
+      userText.replace(usaIndex, 6, "USA");
+   }
+
+   cout << "New text: " << userText<< endl;
+
+   return 0;
+}
+
+
+int main() {
+   string secretStr;
+   unsigned int i;
+   
+   getline(cin, secretStr);
+
+   for (i = 0; i < secretStr.length(); ++i) {
+      
+      if (isspace(secretStr.at(i))) {
+         secretStr.at(i) = '/';
+      }
+      }
+
+   cout << "Updated password: " << secretStr << endl;
+   
+   return 0;
+}
+int main() {
+   string password;
+   int i;
+   int count;
+   
+   getline(cin, password);
+   count = 0;
+   
+   for (i = 0; i < password.length(); ++i) {
+      if (isdigit(password.at(i))) {
+         count += 1;
+      }
+   }
+   if ((count > 2) && (password.length() <= 10)) {
+     cout << "Valid" << endl; 
+   }  else {
+      cout << "Invalid" << endl;
+   }
+   
+   return 0;
+}
+
+int main() {
+   string passPhrase;
+   int index;
+   
+   cin >> passPhrase;
+
+   index = 0;
+
+   while (passPhrase.find("qwerty") != string::npos) {
+      
+      index = passPhrase.find("qwerty");
+      
+      passPhrase.replace(index, 6, "gljmpk");
+   }
+
+   cout << "Updated password: " << passPhrase << endl;
+   
+   return 0;
+}
+
+
+int main() {
+   int firstInput;
+   int secondInput;
+   int count;
+   int i;
+   int j;
+
+   cin >> firstInput;
+   cin >> secondInput;
+
+   count = 0;
+   for (i = 0; i < firstInput; ++i) {
+		for (j = 0; j < secondInput; ++j) {
+         ++count;
+      }
+   }
+
+   cout << "Inner loop ran " << count << " times" << endl;
+
+
+
+   int main() {
+   int initialValue;
+	int finalValue;
+   int i;
+   int j;
+
+   cin >> initialValue;
+	cin >> finalValue;
+   
+   for (i = initialValue; i <= finalValue; ++i) {
+      for (j = 0; j < i; ++j) {
+         cout << '#';
+      }
+      cout << endl;
+   }
+
+   return 0;
+}
