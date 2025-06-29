@@ -189,3 +189,15 @@ Some variables only need to store a small set of named values. For example, a va
 
 
 enum identifier {enumerator1, enumerator2,  ...};
+
+The items within the braces ("enumerators") are integer constants automatically assigned an integer value, with the first item being 0, the second 1, and so on. An enumeration declares a new data type that can be used like the built-in types int, char, etc.
+
+
+
+Basics of functions
+A function is a named list of statements.
+
+A function definition consists of the new function's name and a block of statements. Ex: double CalcPizzaArea() { /* block of statements */ }
+A function call is an invocation of a function's name, causing the function's statements to execute.
+
+A function can only return one item, not two or more.
