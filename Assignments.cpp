@@ -419,3 +419,98 @@ int main() {
    cout << fixed << setprecision(3) << averageVal << endl;
    return 0;
 }
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+   int dataSize;
+   unsigned int i;
+   int intVal;
+   string stringVal;
+
+   cin >> dataSize;
+
+   vector<int> quantityList;
+   vector<string> groceryList;
+   
+   for (i = 0; i < dataSize; ++i) {
+      cin >> intVal;
+      quantityList.push_back(intVal);
+   }
+   
+   for (i = 0; i < dataSize; ++i) {
+      cin >> stringVal;
+      groceryList.push_back(stringVal);
+   }
+
+   for (i = 0; i < quantityList.size(); ++i) {
+      cout << "Quantity: " << quantityList.at(i) << ", ";
+      cout << "Grocery: " << groceryList.at(i) << endl;
+   }
+
+   return 0;
+}
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+   vector<int> ageList;
+   vector<string> userList;
+   int numElements;
+   int ageAsked;
+   unsigned int i;
+   int intVal;
+   string stringVal;
+
+   cin >> numElements;
+
+   for (i = 0; i < numElements; ++i) {
+      cin >> intVal;
+      cin >> stringVal;
+
+      ageList.push_back(intVal);
+      userList.push_back(stringVal);
+   }
+
+   cin >> ageAsked;
+
+   for (i = 0; i < numElements; ++i) {
+   if (ageList[i] == ageAsked) {
+      cout << "Index " << i << ": age " << ageList[i] << " is matched with user " << userList[i] << endl;
+   }
+   }
+
+   return 0;
+}
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+   vector<int> dataVect;
+   int value;
+   int i;
+   int n;
+
+   cin >> value;
+   while (value != -1) {
+      dataVect.push_back(value);
+      cin >> value;
+   }
+   
+   n = dataVect.back();
+   for (i = 0; i < n; ++i) {
+      cout << dataVect[i] << endl;
+   }
+
+   return 0;
+}

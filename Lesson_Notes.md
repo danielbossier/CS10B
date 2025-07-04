@@ -201,3 +201,40 @@ A function definition consists of the new function's name and a block of stateme
 A function call is an invocation of a function's name, causing the function's statements to execute.
 
 A function can only return one item, not two or more.
+
+Parameters
+A programmer can influence a function's behavior via an input.
+
+A parameter is a function input specified in a function definition. Ex: A pizza area function might have diameter as an input.
+An argument is a value provided to a function's parameter during a function call. Ex: A pizza area function might be called as CalcPizzaArea(12.0) or as CalcPizzaArea(16.0).
+A parameter is like a variable declaration. Upon a call, the parameter's memory location is allocated, and the parameter is assigned with the argument's value. Upon returning to the original call location, the parameter is deleted from memory.
+
+An argument may be an expression, like 12.0, x, or x * 1.5.
+
+
+C++ supports another kind of parameter that enables updating of an argument variable. A pass-by-reference parameter does not create a local copy of the argument, but rather the parameter refers directly to the argument variable's memory location. Appending & to a parameter's data type makes the parameter pass-by-reference type.
+
+
+Manually examining a program's printed output is cumbersome and error prone. A better test harness would only print a message for incorrect output. The language provides a compact way to print an error message when an expression evaluates to false. assert() is a macro (similar to a function) that prints an error message and exits the program if assert()'s input expression is false. The error message includes the current line number and the expression (a nifty trick enabled by using a macro rather than an actual function; details are beyond our scope). Using assert requires first including the cassert library, part of the standard library, as shown below.
+
+assert() enables compact readable test harnesses, and also eases the task of examining the program's output for correctness; a program without detected errors would simply output "Testing started" followed by "Testing completed".
+
+
+
+Each function call creates a new set of local variables, forming part of what is known as a stack frame. A return causes those local variables to be discarded.
+
+
+Define a function's output or input/output parameters as pass by reference.
+- But create output parameters sparingly, striving to use return values instead.
+Define input parameters as pass by value.
+- Except for large items (perhaps 10 or more elements); use constant pass by reference for those.
+
+
+
+C++ supports two kinds of ordered list types.
+
+Arrays: declared as int myList[10], accessed as myList[i].
+Vectors: declared as vector<int> myList(10), accessed as myList.at(i).
+Arrays have a simpler syntax than vectors, but vectors are safer to use. Thus, using vectors rather than arrays is good practice.
+
+Vectors are safer because the access v.at(i) is checked during execution to ensure the index is within the vector's valid range. An array access a[i] involves no such check. Such checking is important; trying to access an array with an out-of-range index is a very common error, and one of the hardest errors to debug.
