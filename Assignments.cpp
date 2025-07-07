@@ -514,3 +514,68 @@ int main() {
 
    return 0;
 }
+
+
+The program first reads integer licenseCount from input, representing the number of pairs of inputs to be read. Each pair has a string and an integer, representing the license's state and fee, respectively. One License object is created for each pair and added to vector licenseList. Output "Average license fee: ", followed by the average fee of all the License objects as an integer. End with a newline.
+
+Ex: If the input is:
+
+3
+MO 178 GA 100 IN 295
+
+then the output is:
+
+Average license fee: 191
+
+Note: The ArrayList has at least one element.
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class License {
+   public:
+      void SetStateAndFee(string newState, int newFee);
+		int GetFee() const;
+   private:
+      string state;
+      int fee;
+};
+
+void License::SetStateAndFee(string newState, int newFee) {
+   state = newState;
+   fee = newFee;
+}
+
+int License::GetFee() const {
+	return fee;
+}
+
+int main() {
+   vector<License> licenseList;
+   License currLicense;
+   string currState;
+   int currFee;
+	int sumFee;
+   int licenseCount;
+   unsigned int i;
+
+   cin >> licenseCount;
+   for (i = 0; i < licenseCount; ++i) {
+      cin >> currState;
+      cin >> currFee;
+      
+      currLicense.SetStateAndFee(currState, currFee);
+      licenseList.push_back(currLicense);
+   }
+	
+	sumFee = 0;
+   
+   for (i = 0; i < licenseList.size(); ++i) {
+      sumFee += licenseList[i].GetFee();
+   }
+   
+   cout << "Average license fee: " << sumFee / licenseCount << endl;
+
+   return 0;
+}

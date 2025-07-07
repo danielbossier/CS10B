@@ -238,3 +238,50 @@ Vectors: declared as vector<int> myList(10), accessed as myList.at(i).
 Arrays have a simpler syntax than vectors, but vectors are safer to use. Thus, using vectors rather than arrays is good practice.
 
 Vectors are safer because the access v.at(i) is checked during execution to ensure the index is within the vector's valid range. An array access a[i] involves no such check. Such checking is important; trying to access an array with an out-of-range index is a very common error, and one of the hardest errors to debug.
+
+
+
+The struct construct defines a new type, which can be used to declare a variable with subitems.
+
+struct TimeHrMin {
+   int hourValue;
+   int minuteValue;
+};
+
+...
+
+   TimeHrMin runTime1;
+   TimeHrMin runTime2;
+   TimeHrMin runTime3;
+
+   runTime1.hourValue = 5;
+   runTime1.minuteValue = 46;
+   runTime3.hourValue = runTime1.hourValue;
+
+
+Abstraction means to have a user interact with an item at a high-level, with lower-level internal details hidden from the user (aka information hiding or encapsulation). Ex: An oven supports an abstraction of a food compartment and a knob to control heat. An oven's user need not interact with internal parts of an oven.
+
+Objects strongly support abstraction, hiding entire groups of functions and variables, exposing only certain functions to a user.
+
+An abstract data type (ADT) is a data type whose creation and update are constrained to specific well-defined operations. A class can be used to implement an ADT.
+
+
+
+The class construct defines a new type that can group data and functions to form an object. A class' public member functions indicate all operations a class user can perform on the object. The power of classes is that a class user need not know how the class' data and functions are implemented, but need only understand how each public member function behaves. The animation below shows a class' public member function declarations only; the remainder of the class definition is discussed later.
+
+In addition to public member functions, a class definition has private data members: variables that member functions can access but class users cannot. Private data members appear after the word "private:" in a class definition.
+
+A programmer defining a class first declares member functions after the word "public:" in the class definition. A function declaration provides the function's name, return type, and parameter types, but not the function's statements.
+
+The programmer must also define each member function. A function definition provides a class name, return type, parameter names and types, and the function's statements. A member function definition has the class name and two colons (::), known as the scope resolution operator, preceding the function's name. A member function definition can access private data members.
+
+
+
+Mutators and accessors
+A class' public functions are commonly classified as either mutators or accessors.
+
+A mutator function may modify ("mutate") a class' data members.
+An accessor function accesses data members but does not modify a class' data members.
+Commonly, a data member has two associated functions: a mutator for setting the value, and an accessor for getting the value, known as a setter and getter function, respectively, and typically with names starting with set or get. Other mutators and accessors may exist that aren't associated with just one data member, such as the Print() function below.
+
+Accessor functions usually are defined as const to make clear that data members won't be changed. The keyword const after a member function's name and parameters causes a compiler error if the function modifies a data member. If a const member function calls another member function, that function must also be const.
