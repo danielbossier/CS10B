@@ -285,3 +285,60 @@ An accessor function accesses data members but does not modify a class' data mem
 Commonly, a data member has two associated functions: a mutator for setting the value, and an accessor for getting the value, known as a setter and getter function, respectively, and typically with names starting with set or get. Other mutators and accessors may exist that aren't associated with just one data member, such as the Print() function below.
 
 Accessor functions usually are defined as const to make clear that data members won't be changed. The keyword const after a member function's name and parameters causes a compiler error if the function modifies a data member. If a const member function calls another member function, that function must also be const.
+
+
+C++ has a special class member function, a constructor, called automatically when a variable of that class type is declared, and which can initialize data members. A constructor callable without arguments is a default constructor, like the Restaurant constructor below.
+
+A constructor has the same name as the class. A constructor function has no return type, not even void. Ex: Restaurant::Restaurant() {...} defines a constructor for the Restaurant class.
+
+If a class has no programmer-defined constructor, then the compiler implicitly defines a default constructor having no statements.
+
+
+
+The standard template library (STL) defines classes for common Abstract Data Types (ADTs). A vector is an ADT of an ordered, indexable list of items. The vector ADT is implemented as a class (actually a class template that supports different types such as vector<int> or vector<string>, although templates are discussed elsewhere).
+
+For the commonly-used vector member functions below, assume a vector is declared as:
+
+vector<T> vectorName();
+where T represents the vector's element type, such as:
+
+vector<int> teamNums(5);
+
+
+
+Pointers
+A pointer is a variable that contains a memory address. This section describes a few situations where pointers are useful.
+
+Handling different amounts of data
+A program often needs to support data of varying sizes. Using a predefined fixed-size array may either waste memory or limit the program's usefulness.
+
+
+A program can use a dynamically allocated array to efficiently handle different amounts of data. A dynamically allocated array is an array whose size and memory location are determined during runtime. If a program needs to store more elements than the array's initial capacity, the program can create a new array with an increased capacity and copy the array elements to the new larger array.
+
+A pointer variable is used to store the array's memory location, since the array's location in memory will change each time the array is dynamically allocated.
+
+
+An array (or vector) stores elements in contiguous memory locations, which enables fast access to any element using the element's index. However, inserting an item requires making room by shifting higher-indexed items. For an array with thousands of elements, a single insert can require thousands of operations and cause the program to run very slowly.
+
+A programmer can use a linked list to make inserts faster. A linked list consists of items that contain both data and a pointer (or link) to the next list item. Inserting a new item between two existing items just requires a few operations to update each item's pointer.
+
+
+
+A dynamically allocated array is an array whose size and memory location are determined during runtime. A programmer can use the new operator to allocate an array and use a pointer to hold the array's memory location:
+
+- A pointer is a variable that holds a memory address, rather than holding data like most variables. A pointer is declared by including * before the pointer's name. Ex: double* recordedTimes declares a double pointer named recordedTimes. When a pointer is initialized with the address of a dynamically allocated array, the pointer "points to" the array.
+
+- The new operator allocates memory for the given type and returns a pointer to the allocated memory. Ex: new double[3] dynamically allocates a double array with three elements.
+
+Dynamically allocated memory must be explicitly deallocated once the program no longer needs the memory. The deallocated memory is then available for allocation to other calls of new. The delete[] operator is used to deallocate an array allocated with the new operator. Ex: delete[] recordedTimes; deallocates the array pointed to by recordedTimes. If recordedTimes does not point to any arrays, then an error occurs.
+
+After the delete, a program should not attempt to access the array pointed to by the pointer variable. Accessing memory that has been deallocated, such as a deleted dynamically allocated array, is a common error and may cause strange program behavior.
+
+
+When a pointer is declared, the pointer variable holds an unknown address until the pointer is initialized. A programmer may wish to indicate that a pointer points to "nothing" by initializing a pointer to null. Null means "nothing". A pointer that is assigned with the keyword nullptr is said to be null.
+
+For functions with pointer parameters, a good practice is to check that a pointer is not null before accessing the memory pointed to by the pointer. In the following example, the PrintArray() function ensures that arrayPtr is not null before accessing elements in the array.
+
+
+Dynamically allocate an integer array with numBarrels elements and assign applesEaten with the array's address.:
+ - applesEaten = new int[numBarrels];
