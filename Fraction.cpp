@@ -18,8 +18,6 @@ int main()
         lower = denom;
     }
 
-    //cout << num << "/" << denom << endl;
-
     for (i = lower; i > 0; --i) {
         if (num % i == 0 && denom % i == 0) {
             num = num / i;
