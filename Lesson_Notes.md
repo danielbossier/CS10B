@@ -354,3 +354,59 @@ Static memory — The region where global variables (variables declared outside 
 The stack — The region where a function's local variables are allocated during a function call. A function call adds local variables to the stack, and a return removes them, like adding and removing dishes from a pile; hence the term "stack." Because this memory is automatically allocated and deallocated, it is also called automatic memory.
 
 The heap — The region where the "new" operator allocates memory, and where the "delete" operator deallocates memory. The region is also called free store.
+
+
+
+An object's member function is called using the syntax object.Function(). The object variable before the function name is known as an implicit parameter of the member function because the compiler converts the call syntax object.Function(...) into a function call with a pointer to the object implicitly passed as a parameter. Ex: Function(object, ...).
+
+Within a member function, the implicitly-passed object pointer is accessible via the name this. In particular, a member can be accessed as this->member. The -> is the member access operator for a pointer, similar to the "." operator for non-pointers.
+
+Using this-> makes clear that a class member is being accessed and is essential if a data member and parameter have the same identifier. In the example below, this-> is necessary to differentiate between the data member sideLength and the parameter sideLength.
+
+C++ allows a programmer to redefine the functionality of built-in operators like +, -, and *, to operate on programmer-defined objects, a process known as operator overloading. Suppose a class TimeHrMn has data members hours and minutes. Overloading + would allow two TimeHrMn objects to be added with the + operator.
+
+
+Without Operator Overloading:
+TimeHrMn time1(3, 22);
+TimeHrMn time2(2, 50);
+TimeHrMn timeTot;
+timeTot.hours = time1.hours + time2.hours;
+timeTot.minutes = time1.minutes + time2.minutes;
+
+timeTot.Print();
+
+
+With Operator Overloading:
+TimeHrMn time1(3, 22);
+TimeHrMn time2(2, 50);
+TimeHrMn timeTot;
+timeTot = time1 + time2;
+
+timeTot.Print();
+
+
+To overload +, the programmer creates a member function named operator+. Although + requires left and right operands as in time1 + time2, the member function only requires the right operand (rhs: right-hand-side) as the parameter, because the left operand is the calling object. In other words, time1 + time2 is equivalent to the function call time1.operator+(time2), which is valid syntax but almost never used.
+
+
+When an operator like + has been overloaded, the compiler determines which + operation to invoke based on the operand types. In 4 + 9, the compiler sees two integer operands and thus applies the built-in + operation. In time1 + time2, where time1 and time2 are TimeHrMn objects, the compiler sees two TimeHrMn operands and thus invokes the programmer-defined function.
+
+A programmer can define several functions that overload the same operator, as long as each involves different types so that the compiler can determine which to invoke. The code below overloads the + operator twice in the TimeHrMn class.
+
+main() uses the + operator in 4 statements. The first + involves two TimeHrMn operands, so the compiler invokes the first operator+ function ("A"). The second + involves TimeHrMn and int operands, so the compiler invokes the second operator+ function ("B"). The third + involves two int operands, so the compiler invokes the built-in + operation. The fourth +, commented out, involves an int and TimeHrMn operands. Because no function has those operands ("B" has TimeHrMn and int, not int and TimeHrMn; order matters), that statement would generate a compiler error.
+
+
+
+
+Overloading the equality (==) operator
+A programmer can overload the equality operator (==) to allow comparing objects of a programmer-defined class for equality. To overload ==, the programmer creates a function named operator== that returns bool and takes two const reference arguments of the class type for the left-hand-side and right-hand-side operands. Ex: To overload the == operator for a Review class, the programmer defines a function bool operator==(const Review& lhs, const Review& rhs).
+
+The programmer must also determine when two objects are considered equal. In the Review class below, two Review objects are equal if the objects have the same rating and comment.
+
+
+
+For the assignment:
+TimeHrMn TimeHrMn::operator+(TimeHrMn rhs) {
+TimeHrMn TimeHrMn::operator-(TimeHrMn rhs) {
+TimeHrMn TimeHrMn::operator*(TimeHrMn rhs) {
+TimeHrMn TimeHrMn::operator/(TimeHrMn rhs) {
+

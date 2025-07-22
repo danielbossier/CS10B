@@ -581,3 +581,127 @@ int main() {
 }
 
 
+
+
+#include <iostream>
+using namespace std;
+
+class Distance {
+   public:
+      Distance(int km = 0, int m = 0);
+      void Print() const;
+      Distance operator-(Distance rhs);
+   private:
+      int kilometers;
+      int meters;
+};
+
+Distance::Distance(int km, int m) {
+   kilometers = km;
+   meters = m;
+}
+
+// No need to accommodate for overflow or negative values
+Distance Distance::operator-(Distance rhs) {
+   Distance differenceDistance;
+   
+   differenceDistance.kilometers = this->kilometers - rhs.kilometers;
+   differenceDistance.meters = this->meters - rhs.meters;
+      
+   return differenceDistance;
+}
+
+void Distance::Print() const {
+   cout << kilometers << " kilometers, " << meters << " meters";
+}
+
+int main() {
+   int km1;
+	int m1;
+	int km2;
+	int m2;
+   
+   cin >> km1;
+	cin >> m1;
+	cin >> km2;
+	cin >> m2;
+   
+   Distance distance1(km1, m1);
+	Distance distance2(km2, m2);
+   
+   Distance difference = distance1 - distance2;
+   
+   distance1.Print();
+	cout << endl;
+	distance2.Print();
+	cout << endl;
+	cout << "Difference: ";
+	difference.Print();
+	cout << endl;
+   
+   return 0;
+}
+
+
+
+
+
+#include <iostream>
+using namespace std;
+
+class Coordinate2D {
+   public:
+      Coordinate2D(double xCoord = 0.0, double yCoord = 0.0);
+      void Print() const;
+      Coordinate2D operator+(Coordinate2D rhs);
+   private:
+      double xCoordinate;
+      double yCoordinate;
+};
+
+Coordinate2D::Coordinate2D(double xCoord, double yCoord) {
+   xCoordinate = xCoord;
+   yCoordinate = yCoord;
+}
+
+// No need to accommodate for overflow or negative values
+
+Coordinate2D Coordinate2D::operator+(Coordinate2D rhs) {
+   Coordinate2D totalCoordinate;
+   
+   totalCoordinate.xCoordinate = this->xCoordinate + rhs.xCoordinate;
+   totalCoordinate.yCoordinate = this->yCoordinate + rhs.yCoordinate;
+      
+   return totalCoordinate;
+}
+
+void Coordinate2D::Print() const {
+   cout << xCoordinate << ", " << yCoordinate;
+}
+
+int main() {
+   double xCoord1;
+	double yCoord1;
+	double xCoord2;
+	double yCoord2;
+   
+   cin >> xCoord1;
+	cin >> yCoord1;
+	cin >> xCoord2;
+	cin >> yCoord2;
+   
+   Coordinate2D point1(xCoord1, yCoord1);
+	Coordinate2D point2(xCoord2, yCoord2);
+   
+   Coordinate2D sum = point1 + point2;
+   
+   cout << "(";
+	point1.Print();
+	cout << ") + (";
+	point2.Print();
+	cout << ") = (";
+	sum.Print();
+	cout << ")" << endl;
+   
+   return 0;
+}
