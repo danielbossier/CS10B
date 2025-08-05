@@ -402,11 +402,421 @@ A programmer can overload the equality operator (==) to allow comparing objects 
 
 The programmer must also determine when two objects are considered equal. In the Review class below, two Review objects are equal if the objects have the same rating and comment.
 
+A programmer can also overload relational operators like the less than operator (<). The < operator should return true if the object on the left side of the < operator is less than the object on the right side of the operator. In the Review class below, the operator< function returns true if the left Review operand has a lower rating than the right Review operand.
 
 
-For the assignment:
-TimeHrMn TimeHrMn::operator+(TimeHrMn rhs) {
-TimeHrMn TimeHrMn::operator-(TimeHrMn rhs) {
-TimeHrMn TimeHrMn::operator*(TimeHrMn rhs) {
-TimeHrMn TimeHrMn::operator/(TimeHrMn rhs) {
+The sort() function, defined in the C++ Standard Template Library's (STL) algorithms library, can sort vectors containing objects of programmer-defined classes. To use sort(), a programmer must:
 
+1. Add #include <algorithm> to enable the use of sort().
+2. Overload the < operator for the programmer-defined class.
+3. Call the sort() function as sort(myVector.begin(), myVector.end())
+
+
+
+A name conflict occurs when two or more items like variables, classes, or functions, have the same name. Ex: One programmer creates a Seat class for auditoriums, and a second programmer creates a Seat class for airplanes. A third programmer creating a reservation system for airline and concert tickets wants to use both Seat classes, but a compiler error occurs due to the name conflict.
+
+A namespace defines a region (or scope) used to prevent name conflicts. Above, the auditorium seat class code can be put in an auditorium namespace, and airplane seat class code in an airplane namespace. The scope resolution operator :: allows specifying in which namespace to find a name, as in: auditorium::Seat concertSeat; and airplane::Seat flightSeat;.
+
+
+std namespace
+All items in the C++ standard library are part of the std namespace (short for standard). To use classes like string or predefined objects like cout, a programmer can use one of two approaches:
+
+Scope resolution operator (::): A programmer can use the scope resolution operator to specify the std namespace before C++ standard library items. Ex: std::cout << "Hello"; or std::string userName;
+Namespace directive: A programmer can add the statement using namespace std; to direct the compiler to check the std namespace for any names later in the file that aren't otherwise declared. Ex: For string userName;, the compiler will check namespace std for string.
+For code clarity, most programming guidelines discourage using namespace directives except perhaps for std.
+
+
+
+The keyword static indicates a variable is allocated in memory only once during a program's execution. Static variables are allocated memory once and reside in the program's static memory region for the entire program. Thus, a static variable retains a value throughout the program.
+
+In a class, a static data member is a data member of the class instead of a data member of each class object. Thus, static data members are independent of any class object, and can be accessed without creating a class object.
+
+A static data member is declared inside the class definition, but must also be defined outside the class declaration. Within a class function, a static data member can be accessed just by variable name. A public static data member can be accessed outside the class using the scope resolution operator: ClassName::variableName.
+
+
+A static member function is a class function that is independent of class objects. Static member functions are typically used to access and mutate private static data members from outside the class. Since static methods are independent of class objects, the this parameter is not passed to a static member function. So, a static member function can only access a class' static data members.
+
+
+
+1. friend functions
+These are non-member functions, but they have access to the class's private members because they're declared as friend.
+
+They are used when:
+
+The left-hand operand is not necessarily a Fraction object.
+
+You need symmetry — for example, to support both fraction + int and int + fraction.
+
+You’re comparing or combining two objects.
+
+Examples:
+
+cpp
+Copy
+Edit
+friend Fraction operator+(const Fraction& lhs, const Fraction& rhs);
+friend bool operator==(const Fraction& lhs, const Fraction& rhs);
+friend ostream& operator<<(ostream& out, const Fraction& frac);
+Why?
+
+These need access to num and denom from both operands.
+
+They also allow expressions like 3 + Fraction(1, 2) by enabling overloads outside the class.
+
+🔹 2. Member functions returning Fraction or Fraction&
+These are member functions — they operate on the object itself (this), and are used when:
+
+The left-hand operand must be a Fraction.
+
+You’re changing the internal state (like with +=).
+
+You’re implementing prefix/postfix increment/decrement.
+
+Examples:
+
+cpp
+Copy
+Edit
+Fraction& operator+=(const Fraction& rhs);     // modifies this object
+Fraction& operator++();                        // prefix ++
+Fraction operator++(int);                      // postfix ++
+Why?
+
+These modify the current object (this) or return a result based on it.
+
+Only member functions can modify the current object directly.
+
+You don’t want to allow int += Fraction(...), but you do want Fraction += int or Fraction += Fraction.
+
+
+
+A class containing a dynamically allocated array that may increase in size frequently can be efficiently implemented using an array with extra capacity. Three class members are needed to implement an array with extra capacity:
+
+A pointer to hold the dynamically allocated array's address.
+A capacity to hold the total number of elements that the array can hold.
+A size to hold the number of elements currently held in the array.
+
+
+When a class has a dynamically allocated array that grows, the class' constructor usually initializes the array with a positive capacity and allocates the array. The array's initial size is 0. Ex: The ActivityTracker class' constructor initializes an ActivityTracker object with an Activity array of capacity 2. Allocating memory in powers of 2 is a popular practice because memory management is sometimes faster.
+
+
+Each time an array is expanded, a new array is allocated and existing elements are copied over to the new array. Copying elements is time consuming, especially for large size arrays. To reduce the frequency of array expansion, the new array's capacity is usually doubled at each expansion. Ex: ActivityTracker's member function IncreaseCapacity() doubles the activities array's capacity.
+
+
+Adding elements to a dynamically allocated array with extra capacity
+When an element is added to a dynamically allocated array:
+
+- If the array's capacity is greater than the size, the array has unused space to add the new element. So, the first unused object in the array is assigned with the new element.
+- If the array's capacity is equal to the size, the array does not have unused space. So, the array is first expanded, and then the new element is added.
+
+
+
+A destructor is a special class member function that is called automatically when a variable of that class type is destroyed. When a C++ class object uses dynamically allocated data, such data is commonly deallocated in the class' destructor.
+
+The syntax for a class' destructor function is similar to a class' constructor function, but with a "~" (called a "tilde" character) prepended to the function name. A destructor has no parameters and no return value. Ex: The ActivityTracker class destructor is declared as ~ActivityTracker();.
+
+
+When an array of objects is deallocated using delete[], the destructor is called on each object in the array. Ex: The Activity destructor is not required, but is implemented below to illustrate when the Activity destructor is called.
+
+If an object is dynamically allocated using the new operator, using delete on the object calls the object's destructor. If an object is not dynamically allocated, the object's destructor is called automatically when the object goes out of scope.
+
+
+
+A memory leak occurs when a program that allocates memory loses the ability to access the allocated memory, typically due to failure to properly destroy/free dynamically allocated memory. A program's leaking memory becomes unusable, much like a water pipe might have water leaking out and becoming unusable. A memory leak may cause a program to occupy more and more memory as the program runs, which slows program runtime. Even worse, a memory leak can cause the program to fail if memory becomes completely full and the program is unable to allocate additional memory.
+
+A common error is failing to free allocated memory that is no longer used, resulting in a memory leak. Many programs that are commonly left running for long periods, like web browsers, suffer from known memory leaks — a web search for "<your-favorite-browser> memory leak" will likely result in numerous hits.
+
+
+Garbage collection
+Some programming languages, such as Java, use a mechanism called garbage collection wherein a program's executable includes automatic behavior that at various intervals finds all unreachable allocated memory locations (e.g., by comparing all reachable memory with all previously-allocated memory), and automatically frees such unreachable memory. Some non-standard C++ implementations also include garbage collection. Garbage collection can reduce the impact of memory leaks at the expense of runtime overhead. Computer scientists debate whether new programmers should learn to explicitly free memory versus letting garbage collection do the work.
+
+
+Memory not freed in a destructor
+Destructors are needed when destroying an object involves more work than simply freeing the object's memory. Such a need commonly arises when an object's data member, referred to as a sub-object, has allocated additional memory. Freeing the object's memory without also freeing the sub-object's memory results in a problem where the sub-object's memory is still allocated, but inaccessible, and thus can't be used again by the program.
+
+The program in the animation below is very simple to focus on how memory leaks occur with sub-objects. The class's sub-object is just an integer pointer but typically would be a pointer to a more complex type. Likewise, the object is created and then immediately destroyed, but typically something would have been done with the object.
+
+
+Copy constructor
+The solution is to create a copy constructor, a constructor that is automatically called when an object of the class type is passed by value to a function and when an object is initialized by copying another object during declaration. Ex: MyClass classObj2 = classObj1; or obj2Ptr = new MyClass(classObj1);. The copy constructor makes a new copy of all data members (including pointers), known as a deep copy.
+
+If the programmer doesn't define a copy constructor, then the compiler implicitly defines a constructor with statements that perform a memberwise copy, which simply copies each member using assignment: newObj.member1 = origObj.member1, newObj.member2 = origObj.member2, etc. Creating a copy of an object by copying only the data members' values creates a shallow copy of the object. A shallow copy is fine for many classes, but typically a deep copy is desired for objects that have data members pointing to dynamically allocated memory.
+
+The copy constructor can be called with a single pass-by-reference argument of the class type, representing an original object to be copied to the newly-created object. A programmer may define a copy constructor, typically having the form: MyClass(const MyClass& origObject);
+
+
+The program below adds a copy constructor to the earlier example, which makes a deep copy of the data member dataObject within the MyClass object. The copy constructor is automatically called during the call to SomeFunction(). Destruction of the local object upon return from SomeFunction() frees the newly created dataObject for the local object, leaving the original tempClassObject's dataObject untouched. Printing after the function call correctly prints 9, and destruction of tempClassObject during the return from main() produces no error.
+
+
+Copy constructors in more complicated situations
+The above examples use a trivially-simple class having a dataObject whose type is a pointer to an integer, to focus attention on the key issue. Real situations typically involve classes with multiple data members and with data objects whose types are pointers to class-type objects.
+
+
+Default assignment operator behavior
+Given two MyClass objects, classObj1 and classObj2, a programmer might write classObj2 = classObj1; to copy classObj1 to classObj2. The default behavior of the assignment operator (=) for classes or structs is to perform memberwise assignment. Ex:
+
+classObj2.memberVal1 = classObj1.memberVal1;
+classObj2.memberVal2 = classObj1.memberVal2; 
+...
+
+Such behavior may work fine for members with basic types like int or char, but typically is not the desired behavior for a pointer member. Memberwise assignment of pointers may lead to program crashes or memory leaks.
+
+
+Default assignment operator behavior
+Given two MyClass objects, classObj1 and classObj2, a programmer might write classObj2 = classObj1; to copy classObj1 to classObj2. The default behavior of the assignment operator (=) for classes or structs is to perform memberwise assignment. Ex:
+
+classObj2.memberVal1 = classObj1.memberVal1;
+classObj2.memberVal2 = classObj1.memberVal2; 
+...
+
+Such behavior may work fine for members with basic types like int or char, but typically is not the desired behavior for a pointer member. Memberwise assignment of pointers may lead to program crashes or memory leaks.
+
+
+Overloading the assignment operator
+The assignment operator (=) can be overloaded to eliminate problems caused by a memberwise assignment during an object copy. The implementation of the assignment operator iterates through each member of the source object. Each non-pointer member is copied directly from source member to destination member. For each pointer member, new memory is allocated, the source's referenced data is copied to the new memory, and a pointer to the new member is assigned as the destination member. Allocating and copying data for pointer members is known as a deep copy.
+
+The following program solves the default assignment operator behavior problem by introducing an assignment operator that performs a deep copy.
+
+
+Rule of three
+The rule of three describes a practice that if a programmer explicitly defines any one of three special member functions (namely, a destructor, copy constructor, or copy assignment operator), then the programmer should explicitly define all three. Those three special member functions are sometimes called the big three. A good practice is to always follow the rule of three and define the big three if any one of these functions is defined.
+
+
+Default destructor, copy constructor, and copy assignment operator
+If a programmer does not define a special member function, then the compiler implicitly defines a default implementation:
+
+A default destructor does nothing.
+A default copy constructor initializes an object's data members with a copy, by value, of another object's corresponding members. Such a copy is called a shallow copy.
+A default copy assignment operator assigns an object's data members with a copy, by value, of another object's corresponding members.
+
+
+Rule of Five
+If a function returns a static object, a temporary copy of the static object is created and passed back from the function. Since the static object will be destroyed soon, a more efficient approach is to define move operations to transfer the data from the static object to the temporary copy. Thus, a modern practice since C++11 recommends the rule of five. The five member functions to be defined together are: destructor, copy constructor, copy assignment operator, move constructor, and move assignment operator. While the rule of three is a rule to ensure that classes with dynamically allocated data are handled correctly, the rule of five is primarily a rule for handling such data efficiently.
+
+
+unique_ptr for single objects
+A smart pointer is a class that wraps around a pointer to an object to simplify the memory management of the object. To distinguish a smart pointer from a pointer, the latter is referred to as a raw pointer in this section. unique_ptr is a smart pointer that permits only one owner over an object. When a unique_ptr goes out of scope, the object owned by the unique_ptr is automatically deleted. To use the unique_ptr class, the programmer must include the statement #include <memory> for C++17 and later versions.
+
+
+Types of smart pointers
+C++ supports smart pointers with various ownership relationships between the smart pointer and the dynamically allocated object being pointed to. The following summarizes three common smart pointer types.
+
+
+Type	                 Features	                
+unique_ptr	            A unique_ptr only allows an exclusive ownership of the object. The object's ownership can be transferred to a different unique_ptr, but not shared. When a unique_ptr goes out of scope, the object owned by the unique_ptr is deleted.
+- As an efficient replacement of raw pointer
+
+shared_ptr	            A shared_ptr permits shared ownership of an object. When the last owner of the object goes out of scope, the object is deleted. Internally, a counter, called the reference count, keeps track of the number of owners sharing an object.
+- When a dynamically allocated object is shared by multiple pointers
+
+weak_ptr	            A weak_ptr allows access to, but not ownership of, an object that is owned by a shared_ptr.
+- To interact with a dynamically allocated object whose memory is managed elsewhere
+
+
+
+Lesson 17 Notes:
+
+Each inventory item represents an individual item in an inventory.
+
+Just going to store a description (c-string) and quantity (int).
+
+
+Commonly, one class is similar to another class but with some additions or variations. Ex: A store inventory system might use a class called GenericItem that has itemName and itemQuantity data members. But for produce (fruits and vegetables), a ProduceItem class with data members itemName, itemQuantity, and expirationDate may be desired.
+
+
+Inheritance
+A derived class (or subclass) is a class that is derived from another class, called a base class (or superclass). Any class may serve as a base class. The derived class is said to inherit the properties of the base class, a concept called inheritance. An object declared of a derived class type has access to all the members of the derived class as well as the public and protected members of the base class.
+
+A derived class is declared by placing a colon ":" after the derived class name, followed by a member access specifier like public and a base class name. Ex: class DerivedClass: public BaseClass { ... };. The figure below defines the base class GenericItem and derived class ProduceItem that inherits from GenericItem.
+
+
+Inheritance scenarios
+Various inheritance variations are possible:
+
+A derived class can serve as a base class for another class. Ex: class FruitItem: public ProduceItem {...} creates a derived class FruitItem from ProduceItem, which was derived from GenericItem.
+A class can serve as a base class for multiple derived classes. Ex: class FrozenFoodItem: public GenericItem {...} creates a derived class FrozenFoodItem that inherits from GenericItem, just as ProduceItem inherits from GenericItem.
+A class may be derived from multiple classes. Ex: class House: public Dwelling, public Property {...} creates a derived class House that inherits from base classes Dwelling and Property.
+
+
+Member access
+The members of a derived class have access to the public members of the base class, but not to the private members of the base class. This is logical—allowing access to all private members of a class merely by creating a derived class would circumvent the idea of private members. Thus, adding the following member function to the Restaurant class yields a compiler error.
+
+
+Protected member access
+Recall that members of a class may have their access specified as public or private. A third access specifier is protected, which provides access to derived classes but not by anyone else. The following illustrates the implications of the protected access specifier.
+
+In the following example, the member called name is specified as protected and is accessible anywhere in the derived class. Note however that the name member is not accessible in main() -- the protected specifier only applies to derived classes; protected members are private to everyone else.
+
+
+SPECIFIER	DESCRIPTION
+private	    Accessible by self.
+protected	Accessible by self and derived classes.
+public	    Accessible by self, derived classes, and everyone else.
+
+
+Protected access modifier and encapsulation
+Encapsulation is a goal of object-oriented programming. Encapsulation is restricting access to data from outside a class. The protected access modifier loosens encapsulation since since data may be directly accessed by the base class and any derived classes.
+
+
+Class definitions
+Separately, the keyword "public" in a class definition like class DerivedClass: public BaseClass {...} has a different purpose, relating to the kind of inheritance being carried out:
+
+public : "public-->public, protected-->protected" -- public members of BaseClass are accessible as public members of DerivedClass, and protected members of BaseClass are accessible as protected members of DerivedClass.
+protected : "public-->protected, protected-->protected" -- public and protected members of BaseClass are accessible as protected members of DerivedClass.
+private : "public-->private, protected-->private" -- public and protected members of BaseClass are accessible as private members of DerivedClass. Incidentally, if the specifier is omitted as in "class DerivedClass: BaseClass {...}", the default is private.
+Most derived classes created when learning to program use public inheritance.
+
+
+Overriding
+When a derived class defines a member function that has the same name and parameters as a base class's function, the member function is said to override the base class's function. The example below shows how the Restaurant's GetDescription() function overrides the Business's GetDescription() function.
+
+
+Overriding vs. overloading
+Overriding differs from overloading. In overloading, functions with the same name must have different parameter types or number of parameters. In overriding, a derived class member function must have the same parameter types, number of parameters, and return value as the base class member function with the same name. Overloading is performed if derived and base member functions have different parameter types; the member function of the derived class does not hide the member function of the base class.
+
+
+Calling a base class function
+An overriding function can call the overridden function by prepending the base class name. Ex: Business::GetDescription().
+
+
+A common error is to leave off the prepended base class name when wanting to call the base class's function. Without the prepended base class name, the call to GetDescription() refers to itself (a recursive call), so GetDescription() would call itself, which would call itself, etc., never actually printing anything.
+
+
+22.4 Constructor initializer lists
+A constructor initializer list is an alternative approach for initializing data members in a constructor, coming after a colon and consisting of a comma-separated list of variableName(initValue) items.
+
+
+The approach is important when a data member is a class type that must be explicitly constructed. Otherwise, that data member is by default constructed. Ex: If you have studied vectors, consider a data member consisting of a vector of size 2.
+
+On the left, the constructor initially creates a vector of size 0, then resizes to size 2, where each element has the value 0. On the right, itemList(2) is provided in the SampleClass constructor initialization list, causing the vector constructor to be called with size 2 and each vector element to be initialized with the value 0. Using the initialization list avoids the inefficiency of constructing and then modifying an item.
+
+Note: Since C++11, the data member could have been initialized in the class definition: vector<int> itemList(2);. However, initialization lists are still useful for other cases.
+
+
+Composition should be used when the classes exhibit a "has-a" relationship; inheritance is used when the relationship is an "is-a" relationship
+
+This brings up an important rule of inheritance. C++ takes the "IS-A" relationship very seriously. In fact, any place in a program where a base class object is expected, you are allowed to place an object of a class that is derived from that base class instead. This explains why it is that when we overload the extraction operator, we do not use "ifstream" as the type of the first parameter (see the extraction operator in the invItem class of lesson 16 or in the feetInches class of lesson 13 for examples of this). Instead, we use "istream". But C++ still allows us to use an ifstream object as the argument instead of an istream object. This is because C++ considers an ifstream object to BE an istream object, because the ifstream class is derived from the istream class. Just think, if it weren't for inheritance we would have to write two different extraction operators for each of our classes, one with a first parameter of type istream and one with a first parameter of type ifstream.
+
+Each time a derived class constructor is called, the base class *default* constructor is called before execution of the derived class constructor begins
+
+The derived class shouldn't be messing with the base class data members
+
+
+Take some time to reflect on the program you just completed from the perspective of the base class, Creature. With respect to inheritance, you'll see 3 categories of member functions illustrated (not counting constructors, since they are not inherited).
+
+The accessors and mutators are typical member functions that are inherited and never redefined. For example, the balrog class's getDamage() function calls getStrength(), which it can do because it has been inherited from the Creature class (via the Demon class).
+
+getSpecies() is a pure virtual function. It is not defined in the Creature class, but it must be defined in every class that is derived from the Creature class, or the Creature class won't work, because the Creature class's getDamage() function depends on the fact that getSpecies() exists in the derived class.
+
+getDamage() is a virtual member function that is inherited and is sometimes redefined.
+
+
+Polymorphism
+Polymorphism refers to determining which program behavior to execute depending on data types. Two main types of polymorphism exist:
+
+Compile-time polymorphism is when the compiler determines which function to call at compile-time.
+Runtime polymorphism is when the compiler is unable to determine which function to call at compile-time, so the determination is made while the program is running.
+Function overloading is an example of compile-time polymorphism where the compiler determines which of several identically-named functions to call based on the function's arguments.
+
+One scenario requiring runtime polymorphism involves derived classes. Programmers commonly create a collection of objects of both base and derived class types. Ex: The statement vector<Business*> businessList; creates a vector that can contain pointers to objects of type Business or Restaurant, since Restaurant is derived from Business. Similarly, polymorphism is also used for references to objects. Ex: Business& primaryBusiness declares a reference that can refer to Business or Restaurant objects.
+
+
+Virtual functions
+Runtime polymorphism only works when an overridden member function in a base class is virtual. A virtual function is a member function that may be overridden in a derived class and is used for runtime polymorphism. A virtual function is declared by prepending the keyword "virtual". Ex: virtual string GetDescription() const. At runtime, when a virtual function is called using a pointer, the correct function to call is dynamically determined based on the actual object type to which the pointer or reference refers.
+
+The override keyword is an optional keyword used to indicate that a virtual function is overridden in a derived class. Good practice is to use the override keyword when overriding a virtual function to avoid accidentally misspelling the function name or typing the wrong parameters.
+
+
+Virtual table
+To implement virtual functions, the compiler creates a virtual table that allows the computer to quickly lookup which function to call at runtime. The virtual table contains an entry for each virtual function with a function pointer that points to the most-derived function that is accessible to each class. Looking up which function to call makes runtime polymorphism slower than compile-time polymorphism.
+
+The program below illustrates how runtime polymorphism is used with a vector. businessList is a vector of Business pointers but holds Business and Restaurant pointers. A for loop iterates over businessList and calls each Business pointer's GetDescription() function. Restaurant GetDescription() is called when a Restaurant pointer is accessed because GetDescription() overrides the base class's virtual function.
+
+
+Pure virtual functions
+Sometimes a base class should not provide a definition for a member function, but all derived classes must provide a definition. Ex: A Business may require all derived classes to define a GetHours() function, but the Business class does not provide a default GetHours() function.
+
+A pure virtual function is a virtual function that provides no definition in the base class, and all derived classes must override the function. A pure virtual function is declared like a virtual function with the "virtual" keyword but is assigned with 0. Ex: virtual string GetHours() const = 0; declares a pure virtual function GetHours().
+
+A class that has at least one pure virtual function is known as an abstract base class. An abstract base class object cannot be declared. Ex: The variable declaration Business someBusiness; generates a syntax error if Business is an abstract base class.
+
+
+Abstract classes
+Object-oriented programming (OOP) is a powerful programming paradigm, consisting of several features. Three key features include:
+
+Classes: A class encapsulates data and behavior to create objects.
+Inheritance: Inheritance allows one class (a subclass) to be based on another class (a base class or superclass). Ex: A Shape class may encapsulate data and behavior for geometric shapes, like setting/getting the Shape's name and color, while a Circle class may be a subclass of a Shape, with additional features like setting/getting the center point and radius.
+Abstract classes: An abstract class is a class that guides the design of subclasses but cannot itself be instantiated as an object. Ex: An abstract Shape class might also specify that any subclass must define a ComputeArea() function.
+
+
+Abstract and concrete classes
+A pure virtual function is a virtual function that is not implemented in the base class, thus all derived classes must override the function. A pure virtual function is declared with the "virtual" keyword and is assigned with 0. Ex: virtual double ComputeArea() const = 0; declares a pure virtual function ComputeArea().
+
+An abstract class is a class that cannot be instantiated as an object, but is the superclass for a subclass and specifies how the subclass must be implemented. Any class with one or more pure virtual functions is abstract.
+
+A concrete class is a class that is not abstract, and hence can be instantiated.
+
+
+The concept of inheritance is commonly confused with the idea of composition. Composition is the idea that one object may be made up of other objects, such as a MotherInfo class being made up of objects like firstName (which may be a string object), childrenData (which may be a vector of ChildInfo objects), etc. Defining that MotherInfo class does not involve inheritance, but rather just composing the sub-objects in the class.
+
+
+UML class diagrams
+The Unified Modeling Language (UML) is a language for software design that uses different types of diagrams to visualize the structure and behavior of programs. A structural diagram visualizes static elements of software, such as the attributes (variables) and operations (functions) used in the program. A behavioral diagram visualizes dynamic behavior of software, such as the flow of an algorithm.
+
+A UML class diagram is a structural diagram that can be used to visually model the classes of a computer program, including member variables and functions.
+
+
+UML for inheritance
+UML uses an arrow with a solid line and an unfilled arrow head to indicate that one class inherits from another. The arrow points toward the parent class.
+
+UML uses italics to denote abstract classes. In particular, UML uses italics for the abstract class' name, and for each pure virtual function in the class. As a reminder, a parent class does not have to be abstract. Also, any class with one or more pure virtual functions is abstract.
+
+
+Unhandled exceptions
+An exception is an unexpected incident that stops the normal program execution. Ex: Accessing an out of range element in vector results in an exception. A program that does not handle an exception ends execution.
+
+
+Catching exceptions
+To avoid having a program end when an exception occurs, a program can use try and catch blocks to handle the exception during program execution.
+
+A try block surrounds normal code, which is exited immediately if a statement within the try block throws an exception.
+A catch block catches an exception thrown in a preceding try block. If the thrown exception's type matches the catch block's parameter type, the code within the catch block executes. A catch block is called an exception handler.
+
+
+Handling exceptions
+A program may be able to resolve some exceptions. The previous example only printed an error message and an invalid shipping cost. Instead, the program can handle the exception and then get user input again until a valid input is provided, , as shown in the below example.
+
+
+Type	            Cause of exception
+runtime_error	    Errors that occur and are detected at runtime. runtime_error is a base class for other exceptions.
+system_error	    Errors originating from the underlying operating system or other low-level system components. system_error's typically have an associated error code.
+invalid_argument	Errors due to invalid user inputs or invalid inputs to program components (e.g., function arguments).
+out_of_range	    Errors due to accessing elements outside of a supported range (e.g., vector indices).
+ios_base::failure	Errors due to failures in reading or writing input/output streams.
+
+
+Handling exceptions from opening invalid files
+A program may try to open a file that does not exist. Ex: The file may have been deleted, renamed, or moved. In the below program, the statement inputFile.exceptions(ifstream::failbit); configures the inputFile stream to throw an exception if an error occurs when attempting to open or read from the specified file.
+
+Closing files
+The previous program did not close the opened file before exiting. A good practice is to close all files to allow the operating system to cleanup any resources used while reading from or writing to a file. The following example reads numbers from an input file, calculates the sum and prints the average, then closes the file before exiting.
+
+
+Handling exceptions when writing to files
+A program may fail to write to a file. Ex: The file may have been renamed or moved, or is a read-only file. In the program below, the statement outputFile.exceptions(ofstream::failbit); configures the outputFile stream to throw an exception if an error occurs when attempting to open or write to the specified file.
+
+
+Writing to files after handling exceptions
+A programmer can use a catch block to do additional processing, even if an exception is thrown in the try statement. Ex: If an exception is thrown after a program has opened and partially read a file, code within the catch block can preserve calculations the program has made up to when the exception was thrown. In the program below, the first catch block contains code to write partial results to the output file, even if an exception occurs while reading the input file.
+
+
+24.6 Function templates
+Multiple functions may be nearly identical, differing only in their data types.
+Writing and maintaining redundant functions that only differ by data type can be time-consuming and error-prone. The language supports a better approach.
+
+A function template is a function definition having a special type parameter that may be used in place of types in the function.
+
+
+The function return type is preceded by template<typename TheType>, where TheType can be any identifier. That type is known as a type parameter and can be used throughout the function for any parameter types, return types, or local variable types. The identifier is known as a template parameter, and may be various reference types or even another template parameter.
+
+The compiler automatically generates a unique function definition for each type appearing in function calls to the function template. Thus, the above example's calls would create three TripleMin() function definitions using int, char, and string as in this section's introductory example. The programmer never sees those function definitions.

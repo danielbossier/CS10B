@@ -4,13 +4,12 @@ using namespace std;
 
   
 int main() { 
-    int x;
-    int y;
+    int denom = -5;
+    int num = -2;
 
-    x = 2.0;
-    y = 3.0;
-    y = pow(9);
-    cout << y;
+    denom = -denom;
+
+    cout << denom;
 }
 
 // int main()

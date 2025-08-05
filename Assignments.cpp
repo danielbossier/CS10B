@@ -705,3 +705,59 @@ int main() {
    
    return 0;
 }
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+   vector<int> colorIntensityVector = { 31, 249, 124, 36, 223, 156, 71, 99, 135, 171, 236 };
+   int vIndex;
+   int colorIntensity;
+
+   try {
+      cin >> vIndex;
+      colorIntensity = colorIntensityVector.at(vIndex);
+      cout << "Color intensity: " << colorIntensity << " at index " << vIndex << endl;
+   }
+
+   catch (out_of_range& excpt) {
+      cout << "Error: colorIntensityVector index invalid" << endl;
+   }
+
+   return 0;
+}
+
+
+#include <iostream>
+#include <fstream>
+#include <ios>
+#include <string>
+using namespace std;
+
+int main() {
+   string garlicFileName;
+   ifstream fileStream;
+   int garlicValue;
+
+   cin >> garlicFileName;
+   fileStream.exceptions(ifstream::failbit);
+
+   try {
+      fileStream.open(garlicFileName);
+
+      fileStream >> garlicValue;
+      cout << "Value read from " << garlicFileName << ": " << garlicValue << endl;
+   }
+	catch (ios_base::failure& excpt) {
+		cout << "Failed: " << excpt.what() << endl;
+	}
+
+   // Closes the opened file
+   if (fileStream.is_open()) {
+      fileStream.close();
+   }
+
+   return 0;
+}
