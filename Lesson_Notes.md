@@ -820,3 +820,15 @@ A function template is a function definition having a special type parameter tha
 The function return type is preceded by template<typename TheType>, where TheType can be any identifier. That type is known as a type parameter and can be used throughout the function for any parameter types, return types, or local variable types. The identifier is known as a template parameter, and may be various reference types or even another template parameter.
 
 The compiler automatically generates a unique function definition for each type appearing in function calls to the function template. Thus, the above example's calls would create three TripleMin() function definitions using int, char, and string as in this section's introductory example. The programmer never sees those function definitions.
+
+Multiple classes may be nearly identical, differing only in their data types. The following shows a class managing three int numbers, and a nearly identical class managing three short numbers.
+
+
+Writing and maintaining redundant classes that only differ by data type can be time-consuming and error-prone. The language supports a better approach.
+
+A class template is a class definition having a special type parameter that may be used in place of types in the class. A variable declared of that class type must indicate a specific type.
+
+The class declaration is preceded by template<typename TheType>, where TheType can be any identifier. That type is known as a template parameter and can be used throughout the class, such as for parameter types, function return types, or local variable types. The identifier is known as a template parameter, and may be various items such as an int, double, char, or string, or a pointer or reference, or even another template parameter.
+
+Any of the class's functions defined outside the class declaration must also be preceded by the template declaration, and have the type in angle brackets appended to its name as in void TripleItem<TheType>::Print(). An object of this class can be declared by appending after the class name a specific type in angle brackets, such as TripleItem<short> triShorts(99,55,66);.
+

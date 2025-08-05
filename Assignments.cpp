@@ -761,3 +761,68 @@ int main() {
 
    return 0;
 }
+
+
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+int main() {
+   string inputName;
+   int age;
+   // Set exception mask for cin stream
+   cin.exceptions(ios::failbit);
+
+   cin >> inputName;
+   while(inputName != "-1") {
+      try {
+        cin >> age;
+        cout << inputName << " " << (age + 1) << endl;
+      }
+
+      catch (ios_base::failure& excpt) {
+        age = 0;
+        cout << inputName << " " << age << endl;
+        cin.clear();
+        string garbage;
+        getline(cin, garbage);
+      }
+
+      cin >> inputName;
+   }
+   
+   return 0;
+}
+
+
+
+#include <iostream>
+#include <vector>
+#include <stdexcept>      // For std::out_of_range
+using namespace std;
+
+int main() {
+   vector<string> names = { "Ryley", "Edan", "Reagan", "Henry", "Caius", "Jane", "Guto", "Sonya", "Tyrese", "Johnny" };
+   int index;
+
+   
+   try {
+        cin >> index;
+        cout << names.at(index) << endl;
+    }
+    catch (out_of_range& excpt) {
+        if (index < 0) {
+            cout << "Exception! " << excpt.what() << endl;
+            cout << "The closest name is: " << names[0] << endl;
+        }
+        else if (index > 9) {
+            cout << "Exception! " << excpt.what() << endl;
+            cout << "The closest name is: " << names[9] << endl;
+        }
+    }
+
+   return 0;
+}
+
+
