@@ -825,4 +825,178 @@ int main() {
    return 0;
 }
 
+#include <iostream>
+#include <stdexcept>
+using namespace std;
 
+int main() {
+   int userNum;
+   int divNum;
+   int result;
+   cin.exceptions(ios::failbit);       // Allow cin to throw exceptions
+
+
+    try {
+        cin >> userNum;
+        cin >> divNum;
+
+        if (divNum == 0) {
+            throw runtime_error("Divide by zero!");
+        }
+
+        result = userNum / divNum;
+        cout << result << endl;
+    }
+    catch (ios_base::failure& excpt) {
+	    cout << "Input Exception: " << excpt.what() << endl;
+    }
+    catch (runtime_error& excpt) {
+        cout << "Runtime Exception: " << excpt.what() << endl;
+    }
+
+   return 0;
+}
+
+
+#include <iostream>
+#include <iomanip>
+#include <stdexcept>
+using namespace std;
+
+double StepsToMiles(int steps) {
+    double milesWalked;
+
+    if (steps < 0) {
+        throw runtime_error("Exception: Negative step count entered.");
+    }
+
+    milesWalked = steps / 2000.00;
+    return milesWalked;
+}
+
+int main() {
+    double result;
+    int userEnteredSteps;
+
+    try {
+        cin >> userEnteredSteps;
+        result = StepsToMiles(userEnteredSteps);
+
+        cout << fixed << setprecision(2) << result << endl;
+    }
+
+    catch (runtime_error& excpt) {
+        cout << excpt.what() << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+#include <string>
+#include <iostream>
+#include <stdexcept>
+#include <fstream>
+using namespace std;
+
+string FindID(string name, ifstream &infoFS) {
+    string currentName;
+    string currentId;
+
+    infoFS.clear();
+
+    while (infoFS >> currentName >> currentId) {
+        if (currentName == name) {
+            return currentId;
+        }
+    }
+
+    throw runtime_error("Student ID not found for " + name);
+   
+}
+
+string FindName(string ID, ifstream &infoFS) {
+    string currentName;
+    string currentId;
+
+    while (infoFS >> currentName >> currentId) {
+        if (currentId == ID) {
+            return currentName;
+        }
+    }
+
+    throw runtime_error("Student name not found for " + ID);
+   
+}
+
+int main() {
+   int userChoice;
+   string studentName;
+   string studentID;
+   
+   string studentInfoFileName;
+   ifstream studentInfoFS;
+   
+   // Read the text file name from user
+   cin >> studentInfoFileName;
+   
+   // Open the text file
+   studentInfoFS.open(studentInfoFileName);
+   
+   // Read search option from user. 0: FindID(), 1: FindName()
+   cin >> userChoice;
+
+   // FIXME: FindID() and FindName() may throw an Exception.
+   //        Insert a try/catch statement to catch the exception and output the exception message.
+   try {
+   if (userChoice == 0) {
+      cin >> studentName;
+      studentID = FindID(studentName, studentInfoFS);
+      cout << studentID << endl;
+   }
+   else {
+      cin >> studentID;
+      studentName = FindName(studentID, studentInfoFS);
+      cout << studentName << endl;
+   }
+   }
+   catch (runtime_error& excpt) {
+        cout << excpt.what() << endl;
+    }
+
+   studentInfoFS.close();
+   return 0;
+}
+
+
+
+#include <fstream>
+#include <ios>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void add_student(const string &roster) {
+   try{
+      ofstream rosterOutput(roster, ios::app);
+      rosterOutput.exceptions(ios::failbit);
+
+      rosterOutput << "Smith,John,24,12345678" << endl;
+   }
+   catch (ios_base::failure& excpt) {
+      cout << "Permission Error: " << excpt.what() << endl;
+   }
+
+}
+
+int main() {
+   string rosterFileName;
+   cin >> rosterFileName;
+
+   add_student(rosterFileName);
+
+   return 0;
+}
