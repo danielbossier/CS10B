@@ -1100,3 +1100,86 @@ int main(){
       }
    }
 }
+
+
+#include <iostream>
+using namespace std;
+
+void MultiplyValues(int argNum, int result) {
+   result = result * argNum;
+
+   if (argNum <= 4) {
+      cout << result << " = " << argNum;
+   }
+   else {
+      MultiplyValues(argNum - 4, result);
+		cout << " * " << argNum;
+   }
+}
+
+int main() {
+   int argNum;
+   
+   cin >> argNum;
+   MultiplyValues(argNum, 1);
+	cout << endl;
+   
+   return 0;
+}
+
+
+
+
+#include <iostream>
+using namespace std;
+
+void DepositValue(int week, int total) {
+   cout << "week: " << week << ", total: " << total << endl;
+	
+	if (total >= 230) {
+      cout << "Money total increases to 230 in week " << week << ".";
+   }
+
+   else {
+      DepositValue(week + 1, total + 10);
+   }
+}
+
+int main() {
+   int total;
+   
+   cin >> total;
+	DepositValue(1, total);
+   
+   return 0;
+}
+
+
+
+#include <iostream>
+using namespace std;
+
+void purchases(int totalMonth, int month, int amount) {
+   if (month == totalMonth) {
+      cout << "Month: " << totalMonth << ", amount: " << amount << endl;
+   }
+   else {
+      if (month % 2 != 0) {
+         purchases(totalMonth, month + 1, amount - 4);
+      }
+      else {
+         purchases(totalMonth, month + 1, amount - 1);
+      }
+   }
+}
+
+int main() {
+   int totalMonth;
+	int amount;
+   
+   cin >> totalMonth;
+	cin >> amount;
+   purchases(totalMonth, 1, amount);
+   
+   return 0;
+}
