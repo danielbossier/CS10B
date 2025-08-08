@@ -885,5 +885,30 @@ Search is commonly performed to quickly find an item in a sorted list stored in 
 FindMatch() restricts its search to elements within the range lowVal to highVal. main() initially passes a range of the entire list: 0 to (list size - 1). FindMatch() compares to the middle element, returning that element's position if matching. If not matching, FindMatch() checks if the window's size is just one element, returning -1 in that case to indicate the item was not found. If neither of those two base cases are satisfied, then FindMatch() recursively searches either the lower or upper half of the range as appropriate.
 
 
+25.4 Adding output statements for debugging
+Recursive functions can be particularly challenging to debug. Adding output statements can be helpful. Furthermore, an additional trick is to indent the print statements to show the current depth of recursion. The following program adds a parameter indent to a FindMatch() function that searches a sorted list for an item. All of FindMatch()'s print statements start with cout << indentAmt << .... Indent is typically some number of spaces. main() sets indent to three spaces. Each recursive call adds three more spaces. Note how the output now clearly shows the recursion depth.
+
+
+Some programmers like to leave the output statements in the code, commenting them out with "//" when not in use. The statements actually serve as a form of comment as well.
+
+More advanced techniques for handling debug output exist too, such as conditional compilation (beyond this section's scope).
+
+Creating a recursive function can be accomplished in two steps.
+
+
+Write the base case -- Every recursive function must have a case that returns a value without performing a recursive call. That case is called the base case. A programmer may write that part of the function first, and then test. There may be multiple base cases.
+Write the recursive case -- The programmer then adds the recursive case to the function.
+The following illustrates a simple function that computes the factorial of N (i.e. N!). The base case is N = 1 or 1! which evaluates to 1. The base case is written as  if (N <= 1) { fact = 1; }. The recursive case is used for N > 1, and written as else { fact = N * NFact( N - 1 ); }.
+
+
+A common error is to not cover all possible base cases in a recursive function. Another common error is to write a recursive function that doesn't always reach a base case. Both errors may lead to infinite recursion, causing the program to fail.
+
+Typically, programmers will use two functions for recursion. An "outer" function is intended to be called from other parts of the program, like the function int CalcFactorial(int inVal). An "inner" function is intended only to be called from that outer function, for example a function int CalcFactorialHelper(int inVal). The outer function may check for a valid input value, e.g., ensuring inVal is not negative, and then calling the inner function. Commonly, the inner function has parameters that are mainly of use as part of the recursion, and need not be part of the outer function, thus keeping the outer function more intuitive.
+
+Before writing a recursive function, a programmer should determine:
+- Does the problem naturally have a recursive solution?
+- Is a recursive solution better than a non-recursive solution?
+For example, computing N! (N factorial) does have a natural recursive solution, but a recursive solution is not better than a non-recursive solution. The figure below illustrates how the factorial computation can be implemented as a loop. Conversely, binary search has a natural recursive solution, and that solution may be easier to understand than a non-recursive solution.
+
 
 
