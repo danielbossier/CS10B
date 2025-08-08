@@ -1000,3 +1000,62 @@ int main() {
 
    return 0;
 }
+
+
+
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+void FindMiddle(vector<string> nationItems, string targetNation, int lowIndex, int highIndex) {
+   int midIndex;
+   int rangeSize;
+   string midValue;
+
+   cout << "Searching range from index " << lowIndex << " to " << highIndex << endl;
+
+   rangeSize = (highIndex - lowIndex) + 1;
+   midIndex = (lowIndex + highIndex) / 2;
+   midValue = nationItems.at(midIndex);
+
+   if (targetNation == midValue) {
+      cout << targetNation << " is found at index " << midIndex << endl;
+   }
+   else if (rangeSize == 1) {
+      cout << targetNation << " is not in the list" << endl;
+   }
+   else {
+
+      if (targetNation < midValue) {
+
+         FindMiddle(nationItems, targetNation, lowIndex, midIndex);
+         
+      }
+      else {
+
+         FindMiddle(nationItems, targetNation, midIndex + 1, highIndex);
+
+      }
+
+   }
+}
+
+int main() {
+   string targetNation;
+   vector<string> dataList;
+   int numData;
+   int i;
+   string item;
+
+   cin >> targetNation;
+   cin >> numData;
+   for (i = 0; i < numData; ++i) {
+      cin >> item;
+      dataList.push_back(item);
+   }
+
+   FindMiddle(dataList, targetNation, 0, dataList.size() - 1);
+
+   return 0;
+}
