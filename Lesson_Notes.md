@@ -832,3 +832,58 @@ The class declaration is preceded by template<typename TheType>, where TheType c
 
 Any of the class's functions defined outside the class declaration must also be preceded by the template declaration, and have the type in angle brackets appended to its name as in void TripleItem<TheType>::Print(). An object of this class can be declared by appending after the class name a specific type in angle brackets, such as TripleItem<short> triShorts(99,55,66);.
 
+
+Some problems can be solved using a recursive algorithm. A recursive algorithm is an algorithm that breaks the problem into smaller subproblems and applies the same algorithm to solve the smaller subproblems.
+
+The mowing algorithm consists of applying the mowing algorithm on smaller pieces of the yard and thus is a recursive algorithm.
+
+At some point, a recursive algorithm must describe how to actually do something, known as the base case. The mowing algorithm could thus be written as:
+
+Mow the lawn
+If lawn is less than 100 square meters
+Push the lawnmower left-to-right in adjacent rows
+Else
+Mow one half of the lawn
+Mow the other half of the lawn
+
+
+A function may call other functions, including calling itself. A function that calls itself is a recursive function.
+
+Recursive search (general)
+Consider a guessing game program where a friend thinks of a number from 0 to 100 and you try to guess the number, with the friend telling you to guess higher or lower until you guess correctly. What algorithm would you use to minimize the number of guesses?
+
+A first try might implement an algorithm that simply guesses in increments of 1:
+
+Is it 0? Higher
+Is it 1? Higher
+Is it 2? Higher
+This algorithm requires too many guesses (50 on average). A second try might implement an algorithm that guesses by 10s and then by 1s:
+
+Is it 10? Higher
+Is it 20? Higher
+Is it 30? Lower
+Is it 21? Higher
+Is it 22? Higher
+Is it 23? Higher
+This algorithm does better but still requires about 10 guesses on average: 5 to find the correct tens digit and 5 to guess the correct ones digit. An even better algorithm uses a binary search. A binary search algorithm begins at the midpoint of the range and halves the range after each guess. For example:
+
+Is it 50 (the middle of 0-100)? Lower
+Is it 25 (the middle of 0-50)? Higher
+Is it 38 (the middle of 26-50)? Lower
+Is it 32 (the middle of 26-38)?
+After each guess, the binary search algorithm is applied again, but on a smaller range, i.e., the algorithm is recursive.
+
+
+Recursive search function
+A recursive function is a natural match for the recursive binary search algorithm. A function GuessNumber(lowVal, highVal) has parameters that indicate the low and high sides of the guessing range. The function guesses at the midpoint of the range. If the user says lower, the function calls GuessNumber(lowVal, midVal). If the user says higher, the function calls GuessNumber(midVal + 1, highVal).
+
+The recursive function has an if-else statement. The if branch ends the recursion, known as the base case. The else branch has recursive calls. Such an if-else pattern is common in recursive functions.
+
+Recursively searching a sorted list
+Search is commonly performed to quickly find an item in a sorted list stored in an array or vector. Consider a list of attendees at a conference, whose names have been stored in alphabetical order in an array or vector. The following quickly determines whether a particular person is in attendance.
+
+FindMatch() restricts its search to elements within the range lowVal to highVal. main() initially passes a range of the entire list: 0 to (list size - 1). FindMatch() compares to the middle element, returning that element's position if matching. If not matching, FindMatch() checks if the window's size is just one element, returning -1 in that case to indicate the item was not found. If neither of those two base cases are satisfied, then FindMatch() recursively searches either the lower or upper half of the range as appropriate.
+
+
+
+
